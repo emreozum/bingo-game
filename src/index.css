@@ -1,0 +1,66 @@
+*{
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    background-color: #0B2434;
+    padding: 20px;
+    font-family: 'Karla', sans-serif;
+}
+main {
+    background-color: #F5F5F5;
+    height: 700px;
+    max-width: 800px;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .card-array{
+    background: linear-gradient(90deg, #0678bf 0%, #da0a7d 100%);
+    display: grid;
+    grid-template: auto auto / repeat(9, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  title{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0B2434;
+  }
+  .card{
+    /* make card background gradient from dark blue to red colors */
+    
+    
+    background-color: white;
+    border-radius: 30px;
+    padding: 5px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  /* make button roundy and add gradient color from red to blue */
+    button{
+        background: linear-gradient(90deg, #0678bf 0%, #da0a7d 100%);
+        border-radius: 5px;
+        border: none;
+        color: whitesmoke;
+        padding: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    /* make button shine when hovered*/
+    button:hover{
+        background: linear-gradient(90deg, #da0a7d 0%, #0678bf 100%);
+        box-shadow: 0 0 5px #FF008C, 0 0 10px #FF008C, 0 0 5px #FF008C;
+    }
+    /* add button a depth so it could be obvious when it's clicked*/
+    button:active{
+        box-shadow: inset 0 0 5px #FF008C, inset 0 0 10px #FF008C, inset 0 0 10px #FF008C;
+    }
+    
