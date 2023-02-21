@@ -3,34 +3,14 @@ import {useEffect} from 'react'
 import './App.css'
 import Card from './Card'
 import {nanoid} from 'nanoid'
+import Confetti from 'react-confetti'
 
 function App() {
-
   const [cardArray, setCardArray] = useState(generateCardArray())
   const [bingoNumber, setBingoNumber] = useState(0)
   const [rowState, setRowState] = useState('')
 
-  function generateNumber() {
-    return{
-     value: Math.floor(Math.random() * 90),
-     id: nanoid(),
-     isHeld: false
-    } 
-  } 
-
-  //generate 3x9 card array. 
-  function generateCardArray(){
-    const cardArray = []
-    for (let i = 0; i < 27; i++){
-        cardArray.push(generateNumber())
-    }
-    return cardArray
-  }
-
-  //if one of any row is held, then log 'One Row!'
-  //if two of any rows are held, then log 'Two Rows!'
-  //if three rows are all held, then log 'Bingo'
-  function CheckRowState(){
+   function CheckRowState() {
     const row1 = cardArray.slice(0, 9)
     const row2 = cardArray.slice(9, 18)
     const row3 = cardArray.slice(18, 27)
@@ -45,6 +25,7 @@ function App() {
         setRowState('Two Rows!')
         if (row1Held && row2Held && row3Held){
           setRowState('Bingo!')
+          return <Confetti />
         }
       }
     }
@@ -53,12 +34,28 @@ function App() {
     }
   }
 
-  //reset card array
-  function resetCardArray(){
+   function generateNumber() {
+    return{
+     value: Math.floor(Math.random() * 90),
+     id: nanoid(),
+     isHeld: false
+    } 
+  } 
+
+  //generate 3x9 card array. 
+   function generateCardArray(){
+    const cardArray = []
+    for (let i = 0; i < 27; i++){
+        cardArray.push(generateNumber())
+    }
+    return cardArray
+  }
+
+   function resetCardArray(){
     setCardArray(generateCardArray())
   }
 
-  function handleClick(id){
+   function handleClick(id){
     setCardArray(oldCardArray => oldCardArray.map(card => {
       if (card.id === id) {
         return {
@@ -71,7 +68,7 @@ function App() {
     ))
   }
 
-  function generateBingoNumber(){
+   function generateBingoNumber(){
     setBingoNumber(Math.floor(Math.random() * 90))
     setCardArray(oldCardArray => oldCardArray.map(card => {
       if (card.value === bingoNumber) {
@@ -93,7 +90,6 @@ function App() {
      holdCard={() => handleClick(card.id)}
      />
   })
-
 
   return (
     <main>
@@ -119,8 +115,6 @@ function App() {
           <h2 className='bingo-number'>Bingo Number: {bingoNumber}</h2>
         </div>
     </main>
-    
-   
   )
 }
 
