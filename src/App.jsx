@@ -9,6 +9,7 @@ function App() {
   const [cardArray, setCardArray] = useState(generateCardArray())
   const [bingoNumber, setBingoNumber] = useState(0)
   const [rowState, setRowState] = useState('')
+  const [bestScore, setBestScore] = useState(JSON.parse(localStorage.getItem('bestScore')))
 
    function CheckRowState() {
     const row1 = cardArray.slice(0, 9)
@@ -25,6 +26,13 @@ function App() {
         setRowState('Two Rows!')
         if (row1Held && row2Held && row3Held){
           setRowState('Bingo!')
+          if (rollCount < bestScore || bestScore === 0){
+            setBestScore(rollCount)
+            localStorage.setItem('bestScore', JSON.stringify(rollCount))
+          }
+          else{
+            setBestScore(bestScore)
+          }
           return <Confetti />
         }
       }
@@ -36,7 +44,7 @@ function App() {
 
    function generateNumber() {
     return{
-     value: Math.floor(Math.random() * 90),
+     value: Math.floor(Math.random() * 20),
      id: nanoid(),
      isHeld: false
     } 
@@ -44,6 +52,8 @@ function App() {
 
   //generate 3x9 card array. 
    function generateCardArray(){
+    //show best score by getting it from local storage by parsing it
+    
     const cardArray = []
     for (let i = 0; i < 27; i++){
         cardArray.push(generateNumber())
@@ -53,6 +63,7 @@ function App() {
 
    function resetCardArray(){
     setCardArray(generateCardArray())
+    setRollCount(0)
   }
 
    function handleClick(id){
@@ -69,7 +80,7 @@ function App() {
   }
 
    function generateBingoNumber(){
-    setBingoNumber(Math.floor(Math.random() * 90))
+    setBingoNumber(Math.floor(Math.random() * 20))
     setCardArray(oldCardArray => oldCardArray.map(card => {
       if (card.value === bingoNumber) {
         return {
@@ -82,6 +93,20 @@ function App() {
     }))
   }
 
+  //when generateBingoNumber is clicked, rollCount increases by 1
+  const [rollCount, setRollCount] = useState(0)
+  useEffect(() => {
+    
+    if (bingoNumber !== 0){
+      if (cardArray.some(card => card.value === bingoNumber && card.isHeld === false)){
+        rollCount
+      }
+      else{
+        setRollCount(rollCount + 1) 
+      }
+    }
+  }, [bingoNumber])
+  
   const cardElements = cardArray.map(card => {
     return <Card
      key={card.id} 
@@ -101,6 +126,9 @@ function App() {
             {cardElements}
         </div>
         <div>
+          <h2 className='roll-count'>Roll Count: {rollCount} Best Score: {bestScore}</h2>
+        </div>
+        <div>
           <h2 className='row-state'>{rowState}</h2>
         </div>
         
@@ -109,7 +137,7 @@ function App() {
           
         </div>
         <div>
-        <button className='button' onClick={resetCardArray}>Reset Card</button>
+        <button className='button' onClick={resetCardArray}>New Game</button>
         </div>
         <div>
           <h2 className='bingo-number'>Bingo Number: {bingoNumber}</h2>
